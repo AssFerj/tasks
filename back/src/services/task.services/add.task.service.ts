@@ -2,13 +2,12 @@ import prismaClient from "../../prisma";
 
 export interface ICreateTaskProps{
     userId: string
-    description: string, 
-    user_id: string
+    description: string
 }
 
 class CreateTaskService{
     async execute(task: ICreateTaskProps){
-        if(!task.description || !task.user_id){
+        if(!task.description){
             throw new Error("Missing parameters");
         }
 
