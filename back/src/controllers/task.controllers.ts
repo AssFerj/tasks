@@ -3,8 +3,6 @@ import { CreateTaskService } from "../services/task.services/add.task.service";
 import { ListTasksService } from "../services/task.services/list.tasks.service";
 import { DeleteTaskService } from "../services/task.services/delete.task.service";
 
-
-
 class CreateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         const {userId} = request.params as {userId: string}
