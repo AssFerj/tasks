@@ -39,6 +39,26 @@ class ListTasksController{
     }
 }
 
+class UpdateTaskController{
+    async handle(request: FastifyRequest, reply: FastifyReply){
+        const {userId, taskId} = request.params as {userId: string, taskId: string}
+        const {description, status} = request.body as {description: string, status: string}
+        if(!userId){
+            return reply.status(400).send({message: "Missing required field: User Id"})
+        }
+        if(!taskId){
+            return reply.status(400).send({message: "Missing required field: Task Id"})
+        }
+        // const taskService = new UpdateTaskService()
+        // const updatedTask = await taskService.execute(userId, taskId)
+        return reply.status(201).send({
+            ok: true,
+            message: "Task updated successfully",
+            // data: updatedTask
+        })
+    }
+}
+
 class DeleteTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         const {userId, taskId} = request.params as {userId: string, taskId: string}
