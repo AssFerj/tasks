@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import { CreateTaskController, ListTasksController } from '../controllers/task.controllers'
+import { CreateTaskController, DeleteTaskController, ListTasksController } from '../controllers/task.controllers'
 
 export async function taskRoutes(fastfy: FastifyInstance) {
     fastfy.post('/user/:userId/task', (request: FastifyRequest, reply: FastifyReply) => {
@@ -15,6 +15,6 @@ export async function taskRoutes(fastfy: FastifyInstance) {
     })
 
     fastfy.delete('/user/:userId/task/:taskId', (request: FastifyRequest, reply: FastifyReply) => {
-        // return new DeleteTaskController().handle(request, reply)
+        return new DeleteTaskController().handle(request, reply)
     })
 }
