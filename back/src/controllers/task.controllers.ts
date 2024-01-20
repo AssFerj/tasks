@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateTaskService } from "../services/task.services/add.task.service";
 import { ListTasksService } from "../services/task.services/list.tasks.service";
+import { DeleteTaskService } from "../services/task.services/delete.task.service";
 
 
 
@@ -42,16 +43,19 @@ class ListTasksController{
 
 class DeleteTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
-        const {userId} = request.params as {userId: string}
-        const {taskId} = request.params as {taskId: string}
+        const {userId, taskId} = request.params as {userId: string, taskId: string}
         if(!userId){
-            return reply.status(400).send({message: "Missing required field: Id"})
+            return reply.status(400).send({message: "Missing required field: User Id"})
         }
-        
+        if(!taskId){
+            return reply.status(400).send({message: "Missing required field: Task Id"})
+        }
+        const taskService = new DeleteTaskService()
+        const deletedTask = await taskService.execute(userId, taskId)
         return reply.status(201).send({
             ok: true,
             message: "Task deleted successfully",
-            data: {}
+            data: deletedTask
         })
     }
 }
