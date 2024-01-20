@@ -1,16 +1,20 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import { CreateUserController, DeleteUserController, ListUsersController } from '../controllers/user.controller'
+import { CreateTaskController, ListTasksController } from '../controllers/task.controllers'
 
 export async function taskRoutes(fastfy: FastifyInstance) {
-    fastfy.get('/user/:userId/task', (request: FastifyRequest, reply: FastifyReply) => {
-        return new ListUsersController().handle(request, reply)
+    fastfy.post('/user/:userId/task', (request: FastifyRequest, reply: FastifyReply) => {
+        return new CreateTaskController().handle(request, reply)
     })
 
-    fastfy.post('/user/:userId/task', (request: FastifyRequest, reply: FastifyReply) => {
-        return new CreateUserController().handle(request, reply)
+    fastfy.get('/user/:userId/task', (request: FastifyRequest, reply: FastifyReply) => {
+        return new ListTasksController().handle(request, reply)
+    })
+
+    fastfy.put('/user/:userId/task/:taskId', (request: FastifyRequest, reply: FastifyReply) => {
+        // return new UpdateTaskController().handle(request, reply)
     })
 
     fastfy.delete('/user/:userId/task/:taskId', (request: FastifyRequest, reply: FastifyReply) => {
-        return new DeleteUserController().handle(request, reply)
+        // return new DeleteTaskController().handle(request, reply)
     })
 }
