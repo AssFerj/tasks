@@ -3,8 +3,7 @@ import prismaClient from "../../prisma";
 export interface IUpdateTaskProps {
     userId: string, 
     taskId: string, 
-    description: string, 
-    status?: boolean
+    description: string
 }
 
 class UpdateTaskService{
@@ -15,8 +14,7 @@ class UpdateTaskService{
                 user_id: data.userId
             },
             data:{
-                description: data.description,
-                status: data.status
+                description: data.description
             }
         })
 

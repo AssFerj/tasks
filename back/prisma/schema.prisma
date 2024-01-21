@@ -25,7 +25,6 @@ model User {
 model Task {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   description String
-  status Boolean @default(false)
   user User @relation(fields: [user_id], references: [id])
   user_id String @db.ObjectId
   created_at DateTime? @default(now())
