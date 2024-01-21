@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateUserService } from "../services/user.services/add.user.service";
 import { ListUsersService } from "../services/user.services/list.users.service";
 import { DeleteUserService } from "../services/user.services/delete.user.service";
-
+import { LoginUserService } from "../services/user.services/login.user.service";
 
 class CreateUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -37,7 +37,15 @@ class ListUsersController{
         return reply.status(201).send({
             ok: true,
             message: "Users listted successfully",
-            data: users
+            data: users.map(user => {
+                return {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    createdAt: user.created_at,
+                    updatedAt: user.updated_at
+                }
+            })
         })
     }
 }
@@ -53,9 +61,44 @@ class DeleteUserController{
         return reply.status(201).send({
             ok: true,
             message: "User deleted successfully",
-            data: deletedUser
+            data: {
+                id: deletedUser.id,
+                name: deletedUser.name,
+                email: deletedUser.email
+            }
         })
     }
 }
 
-export { CreateUserController, ListUsersController, DeleteUserController }
+class LoginUserController{
+    async handle(request: FastifyRequest, reply: FastifyReply){
+        const {email, password} = request.body as {email: string, password: string}
+        if(!email){
+            return reply.status(400).send({message: "Missing required field: E-mail"})
+        }
+        if(!password){
+            return reply.status(400).send({message: "Missing required field: Password"})
+        }
+        const userService = new LoginUserService()
+        const loggedUser = await userService.execute({
+            email: email,
+            password: password
+        })
+        if(!loggedUser){
+            return reply.status(401).send({message: "Invalid credentials"})
+        }
+        return reply.status(201).send({
+            ok: true,
+            message: "User logged successfully",
+            data: {
+                id: loggedUser.id,
+                name: loggedUser.name,
+                email: loggedUser.email,
+                updatedAt: loggedUser.updated_at,
+                createdAt: loggedUser.created_at
+            }
+        })
+    }
+}
+
+export { CreateUserController, ListUsersController, DeleteUserController, LoginUserController }
