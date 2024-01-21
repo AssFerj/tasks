@@ -99,9 +99,7 @@ class LoginUserController{
             data: {
                 id: loggedUser.id,
                 name: loggedUser.name,
-                email: loggedUser.email,
-                updatedAt: loggedUser.updated_at,
-                createdAt: loggedUser.created_at
+                email: loggedUser.email
             }
         })
     }
