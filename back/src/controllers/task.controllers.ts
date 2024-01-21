@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateTaskService } from "../services/task.services/add.task.service";
 import { ListTasksService } from "../services/task.services/list.tasks.service";
 import { DeleteTaskService } from "../services/task.services/delete.task.service";
+import { UpdateTaskService } from "../services/task.services/update.task.service";
 
 class CreateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -42,19 +43,22 @@ class ListTasksController{
 class UpdateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         const {userId, taskId} = request.params as {userId: string, taskId: string}
-        const {description, status} = request.body as {description: string, status: string}
+        const {description, status} = request.body as {description: string, status: boolean}
         if(!userId){
-            return reply.status(400).send({message: "Missing required field: User Id"})
+            return reply.status(400).send({message: "User not found"})
         }
         if(!taskId){
-            return reply.status(400).send({message: "Missing required field: Task Id"})
+            return reply.status(400).send({message: "Task not found"})
         }
-        // const taskService = new UpdateTaskService()
-        // const updatedTask = await taskService.execute(userId, taskId)
+        if(!description){
+            return reply.status(400).send({message: "Missing required field: Description"})
+        }
+        const taskService = new UpdateTaskService()
+        const updatedTask = await taskService.execute({userId, taskId, description, status})
         return reply.status(201).send({
             ok: true,
             message: "Task updated successfully",
-            // data: updatedTask
+            data: updatedTask
         })
     }
 }
@@ -78,4 +82,4 @@ class DeleteTaskController{
     }
 }
 
-export { CreateTaskController, ListTasksController, DeleteTaskController }
+export { CreateTaskController, ListTasksController, UpdateTaskController, DeleteTaskController }
