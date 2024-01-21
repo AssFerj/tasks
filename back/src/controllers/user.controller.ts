@@ -3,6 +3,7 @@ import { CreateUserService } from "../services/user.services/add.user.service";
 import { ListUsersService } from "../services/user.services/list.users.service";
 import { DeleteUserService } from "../services/user.services/delete.user.service";
 import { LoginUserService } from "../services/user.services/login.user.service";
+import { GetUserByEmailService } from "../services/user.services/get.user.by.email.service";
 
 class CreateUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -15,6 +16,11 @@ class CreateUserController{
         }
         if(!password){
             return reply.status(400).send({message: "Missing required field: Password"})
+        }
+        const userAlreadyExist = new GetUserByEmailService()
+        const result = await userAlreadyExist.execute(email)
+        if(result){
+            return reply.status(400).send({message: "User already exist"})
         }
         const userService = new CreateUserService()
         const user = await userService.execute({
