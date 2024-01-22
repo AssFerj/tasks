@@ -6,13 +6,13 @@ class CreateUserController{
         try {
             const {name, email, password} = request.body as {name: string, email: string, password: string}
             if(!name){
-                return reply.status(400).send({message: "Missing required field: Name"})
+                return reply.status(404).send({message: "Missing required field: Name"})
             }
             if(!email){
-                return reply.status(400).send({message: "Missing required field: E-mail"})
+                return reply.status(404).send({message: "Missing required field: E-mail"})
             }
             if(!password){
-                return reply.status(400).send({message: "Missing required field: Password"})
+                return reply.status(404).send({message: "Missing required field: Password"})
             }
             const userAlreadyExist = new GetUserByEmailService()
             const result = await userAlreadyExist.execute(email)
@@ -65,7 +65,7 @@ class DeleteUserController{
         try {
             const {userId} = request.params as {userId: string}
             if(!userId){
-                return reply.status(400).send({message: "Missing required field: Id"})
+                return reply.status(404).send({message: "Missing required field: Id"})
             }
             const userService = new DeleteUserService()
             const deletedUser = await userService.execute(userId)
@@ -89,10 +89,10 @@ class LoginUserController{
         try {
             const {email, password} = request.body as {email: string, password: string}
             if(!email){
-                return reply.status(400).send({message: "Missing required field: E-mail"})
+                return reply.status(404).send({message: "Missing required field: E-mail"})
             }
             if(!password){
-                return reply.status(400).send({message: "Missing required field: Password"})
+                return reply.status(404).send({message: "Missing required field: Password"})
             }
             const userService = new LoginUserService()
             const loggedUser = await userService.execute({

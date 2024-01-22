@@ -7,10 +7,10 @@ class CreateTaskController{
             const {userId} = request.params as {userId: string}
             const {description} = request.body as {description: string, status: string, user_id: string}
             if(!userId){
-                return reply.status(400).send({message: "User not found"})
+                return reply.status(404).send({message: "User not found"})
             }
             if(!description){
-                return reply.status(400).send({message: "Missing required field: Description"})
+                return reply.status(404).send({message: "Missing required field: Description"})
             }
             const taskService = new CreateTaskService()
             const task = await taskService.execute({userId, description})
@@ -30,7 +30,7 @@ class ListTasksController{
         try {
             const {userId} = request.params as {userId: string}
             if(!userId){
-                return reply.status(400).send({message: "User not found"})
+                return reply.status(404).send({message: "User not found"})
             }
             const taskService = new ListTasksService()
             const tasks = await taskService.execute(userId)
@@ -51,13 +51,13 @@ class UpdateTaskController{
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             const {description} = request.body as {description: string}
             if(!userId){
-                return reply.status(400).send({message: "User not found"})
+                return reply.status(404).send({message: "User not found"})
             }
             if(!taskId){
-                return reply.status(400).send({message: "Task not found"})
+                return reply.status(404).send({message: "Task not found"})
             }
             if(!description){
-                return reply.status(400).send({message: "Missing required field: Description"})
+                return reply.status(404).send({message: "Missing required field: Description"})
             }
             const taskService = new UpdateTaskService()
             const updatedTask = await taskService.execute({userId, taskId, description})
@@ -77,10 +77,10 @@ class DeleteTaskController{
         try {
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             if(!userId){
-                return reply.status(400).send({message: "Missing required field: User Id"})
+                return reply.status(404).send({message: "Missing required field: User Id"})
             }
             if(!taskId){
-                return reply.status(400).send({message: "Missing required field: Task Id"})
+                return reply.status(404).send({message: "Missing required field: Task Id"})
             }
             const taskService = new DeleteTaskService()
             const deletedTask = await taskService.execute(userId, taskId)
