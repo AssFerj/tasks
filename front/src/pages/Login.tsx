@@ -1,50 +1,159 @@
-import { Grid, Paper, Box, Avatar, Typography } from '@mui/material';
-import React from 'react';
-import TaskIcon from '@mui/icons-material/Task';
-import Copyright from '../components/Copyright/Copyright';
-import LoginForm from '../components/LoginForm/LoginForm';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import '../app.css'
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { loginAction } from '../store/modules/userSlice';
+import { themeDark } from '../config/Theme/Theme';
+import { alpha } from '@mui/material';
 
-const Login: React.FC = () => {
+function Copyright(props: any) {
   return (
-    <React.Fragment>
-      <Grid container component="main" sx={{ height: '100vh' }}>
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1586473219010-2ffc57b0d282?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: t => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://curriculum-web-j3bj.vercel.app/" sx={{
+        "&:hover":{
+          color: `${themeDark.palette.primary.contrastText}`
+        }
+      }}>
+        Assis Junior
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+export default function SignIn() {
+  const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const logedUser = useSelector((state: any)=> state.logedUserReducer);
+  console.log(logedUser);
+  
+  useEffect(() => {
+      if(logedUser.id){
+      navigate('/home');
+      return;
+    }
+  }, [logedUser, navigate]);
+
+  const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const logUser = {
+      email,
+      password
+    }
+    dispatch(loginAction(logUser));
+    // navigate('/home');
+    return;
+  };
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5" color={themeDark.palette.primary.contrastText}>
+          Tasks - Login
+        </Typography>
+        <Box component="form" onSubmit={submitLogin} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
+            type='email'
+            autoFocus
             sx={{
-              my: 8,
-              mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
+              borderRadius: 1,
+              borderColor: `${themeDark.palette.secondary.main}`,
+              background: `${themeDark.palette.primary.contrastText}`,
+              '&:Mui-focused': {
+                boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
+                borderColor: themeDark.palette.secondary.light,
+              }
+            }}
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Senha"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            sx={{
+              borderRadius: 1,
+              borderColor: `${themeDark.palette.secondary.main}`,
+              background: `${themeDark.palette.primary.contrastText}`,
+              '&:Mui-focused': {
+                boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
+                borderColor: themeDark.palette.secondary.light,
+              }
+            }}
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ 
+              mt: 3, 
+              mb: 2,
+              background: `${themeDark.palette.secondary.dark}`,
+              "&:hover":{
+                background: `${themeDark.palette.primary.dark}`,
+                color: `${themeDark.palette.primary.contrastText}`
+              }
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-              <TaskIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Task-In
-            </Typography>
-            <LoginForm />
-          </Box>
-          <Copyright />
-        </Grid>
-      </Grid>
-    </React.Fragment>
+            Entrar
+          </Button>
+          <Grid container>
+            <Grid item>
+              <Link href="/cadastro" variant="body2"
+                sx={{
+                  textDecoration: 'none',
+                  color: `${themeDark.palette.secondary.light}`,
+                  "&:hover":{
+                    color: `${themeDark.palette.primary.contrastText}`
+                  }
+                }}
+              >
+                {"Não tem uma conta? Cadastre-se"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 4, color: `${themeDark.palette.secondary.light}` }} />
+    </Container>
   );
-};
-
-export default Login;
+}

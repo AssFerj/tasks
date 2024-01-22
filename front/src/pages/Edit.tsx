@@ -1,107 +1,86 @@
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import AppBar from '../components/AppBar/AppBar';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { selectById, updateTask } from '../store/modules/tasksSlice';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { useNavigate, useParams } from 'react-router-dom';
-import Copyright from '../components/Copyright/Copyright';
+import { /*useDispatch,*/ useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+// import { editTaskAction } from '../store/modules/tasksSlice';
+// import TaskType from '../types/TaskType';
+// import { themeLight } from '../config/Theme/Theme';
+import { Typography, alpha } from '@mui/material';
+import { themeLight } from '../config/Theme/Theme';
 
 const Edit: React.FC = () => {
   const params = useParams();
-  const [description, setDescription] = useState<string>('');
-  const [valid, setValid] = useState<boolean>(false);
-  const TasksRedux = useAppSelector(state => selectById(state, params.id || ''));
-  const logedUser = useAppSelector(state => state.userReducer);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  //validação para acesso a home
+  // const dispatch = useDispatch();
+  const [newDescription, setNewDescription] = useState('');
+  const state = useSelector((state: RootState) => state.tasksReducer);
+  const logedUser = useSelector((state: RootState)=> state.logedUserReducer); 
+  const taskToEdit = state.find(task =>task.id === params.id);
+  
+  // console.log(logedUser);
+  
   useEffect(() => {
-    if (logedUser.remember === false || !logedUser) {
+    const isUserLoged = !!logedUser.id;
+    
+    if(!isUserLoged){
       navigate('/');
+      return;
     }
   }, [logedUser, navigate]);
-
-  useEffect(() => {
-    description.length >= 3 ? setValid(true) : setValid(false);
-  }, [description]);
-
-  useEffect(() => {
-    if (TasksRedux) {
-      setDescription(TasksRedux.description);
-    }
-  }, [TasksRedux]);
-
+  
   const handleSetDescription = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setDescription(e.currentTarget.value);
+    setNewDescription(e.currentTarget.value);
   };
 
   const handleEditTask = () => {
-    if (params.id) {
-      dispatch(updateTask({ id: params.id, changes: { description } }));
-      alert('Recado Editado com sucesso!');
+    if(params.id){
+      // const taskEdit = {
+      //   id: params.id,
+      //   userId: logedUser.id,
+      //   newDescription
+      // }
+      // dispatch(editTaskAction(taskEdit));
       navigate('/home');
+      return;
     }
   };
 
   return (
     <React.Fragment>
-      <Grid
-        container
-        style={{
-          height: '100vh',
-          backgroundImage: 'url(/images/bg.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          padding: '1.5rem'
+      <h1>Editar recado</h1>
+      <Typography variant='body1'>{taskToEdit?.description}</Typography>
+      <TextField
+        autoFocus
+        margin="dense"
+        id="name"
+        label="Digite a nova descrição"
+        type={"text"}
+        fullWidth
+        variant="outlined"
+        sx={{
+          borderRadius: 1,
+          color: themeLight.palette.secondary.contrastText,
+          borderColor: `${themeLight.palette.secondary.main}`,
+          background: `${themeLight.palette.primary.contrastText}`,
+          '&:Mui-focused': {
+            boxShadow: `${alpha(themeLight.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
+            borderColor: themeLight.palette.secondary.light,
+          }
         }}
-      >
-        <Container
-          style={{
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            alignItems: 'start',
-            marginTop: '5em'
-          }}
-        >
-          <AppBar />
-          <Grid
-            item
-            xl={12}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#fff',
-              color: 'text.primary',
-              maxWidth: '30%',
-              padding: '1rem',
-              margin: '1rem',
-              borderRadius: '.5rem'
-            }}
-          >
-            <Typography variant="h6" mb={5}>
-              Editar Tarefas
-            </Typography>
-            <TextField
-              id="task-description"
-              label="Descrição"
-              variant="standard"
-              fullWidth
-              type={'text'}
-              sx={{ marginBottom: 3 }}
-              value={description}
-              onChange={e => handleSetDescription(e)}
-            />
-            <Button variant="contained" fullWidth onClick={() => handleEditTask()} disabled={!valid}>
-              Editar
-            </Button>
-          </Grid>
-        </Container>
-      </Grid>
-      <Copyright />
+        value={newDescription}
+        onChange={e => handleSetDescription(e)}
+      />
+      <Button variant='contained' fullWidth sx={{
+        marginTop: 2,
+        background: `${themeLight.palette.secondary.dark}`,
+        "&:hover":{
+          background: `${themeLight.palette.primary.dark}`,
+          color: `${themeLight.palette.primary.contrastText}`
+        }
+      }} onClick={handleEditTask}>Editar</Button>
+
     </React.Fragment>
   );
 };

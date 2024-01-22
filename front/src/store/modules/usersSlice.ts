@@ -1,21 +1,26 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import UserType from '../../types/UserType';
-import { RootState } from '../store';
+import { createUser } from '../../services/api.service';
 
-const adapter = createEntityAdapter<UserType>({
-  selectId: item => item.email
+export const createUserAction = createAsyncThunk('tasks/create', async (props: UserType) => {
+  const result = await createUser(props);
+  return result;
 });
-
-export const { selectAll, selectById: selectByEmail } = adapter.getSelectors((state: RootState) => state.usersReducer);
 
 const usersSlice = createSlice({
   name: 'users',
-  initialState: adapter.getInitialState(),
-  reducers: {
-    addUser: adapter.addOne,
-    updateUser: adapter.updateOne
+  initialState: [] as UserType[],
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(createUserAction.pending, () => {
+      console.log('Create user started');
+      
+    })
+    builder.addCase(createUserAction.fulfilled, (_, action) => {
+      console.log('Create user ended');
+      return action.payload.data;
+    })
   }
 });
 
-export const { addUser, updateUser } = usersSlice.actions;
 export default usersSlice.reducer;
