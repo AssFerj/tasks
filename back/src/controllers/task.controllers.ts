@@ -1,8 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateTaskService } from "../services/task.services/add.task.service";
-import { ListTasksService } from "../services/task.services/list.tasks.service";
-import { DeleteTaskService } from "../services/task.services/delete.task.service";
-import { UpdateTaskService } from "../services/task.services/update.task.service";
+import { CreateTaskService, DeleteTaskService, ListTasksService, UpdateTaskService } from "../services/task.services";
 
 class CreateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
