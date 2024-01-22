@@ -1,9 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateUserService } from "../services/user.services/add.user.service";
-import { ListUsersService } from "../services/user.services/list.users.service";
-import { DeleteUserService } from "../services/user.services/delete.user.service";
-import { LoginUserService } from "../services/user.services/login.user.service";
-import { GetUserByEmailService } from "../services/user.services/get.user.by.email.service";
+import { CreateUserService, DeleteUserService, GetUserByEmailService, ListUsersService, LoginUserService } from "../services/user.services";
 
 class CreateUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
