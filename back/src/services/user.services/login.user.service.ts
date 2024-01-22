@@ -5,7 +5,6 @@ export interface ILoginProps{
     password: string
 }
 
-//Verifica se o usuário existe e se a senha está correta.
 class LoginUserService{
     async execute(loginData: ILoginProps){
         const user = await prismaClient.user.findFirst({
