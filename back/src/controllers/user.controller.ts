@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateUserService, DeleteUserService, GetUserByEmailService, ListUsersService, LoginUserService } from "../services/user.services";
+import { JwtService } from "../services/auth.service/auth.service";
 
 class CreateUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -102,13 +103,22 @@ class LoginUserController{
             if(!loggedUser){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
+            if(loggedUser.password !== password){
+                return reply.status(401).send({message: "Invalid credentials"})
+            }
+            const token = new JwtService().createToken({
+                id: loggedUser.id,
+                name: loggedUser.name,
+                email: loggedUser.email
+            })
             return reply.status(201).send({
                 ok: true,
                 message: "User logged successfully",
                 data: {
                     id: loggedUser.id,
                     name: loggedUser.name,
-                    email: loggedUser.email
+                    email: loggedUser.email,
+                    token
                 }
             })
         } catch (error) {
