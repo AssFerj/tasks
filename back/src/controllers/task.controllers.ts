@@ -4,6 +4,13 @@ import { CreateTaskService, DeleteTaskService, ListTasksService, UpdateTaskServi
 class CreateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
+            const token = request.headers.authorization
+            if (!token) {
+                return reply.code(401).send({
+                    ok: false,
+                    error: 'Unauthorized'
+                })
+            }
             const {userId} = request.params as {userId: string}
             const {description} = request.body as {description: string, status: string, user_id: string}
             if(!userId){
@@ -28,6 +35,13 @@ class CreateTaskController{
 class ListTasksController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
+            const token = request.headers.authorization
+            if (!token) {
+                return reply.code(401).send({
+                    ok: false,
+                    error: 'Unauthorized'
+                })
+            }
             const {userId} = request.params as {userId: string}
             if(!userId){
                 return reply.status(404).send({message: "User not found"})
@@ -48,6 +62,13 @@ class ListTasksController{
 class UpdateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
+            const token = request.headers.authorization
+            if (!token) {
+                return reply.code(401).send({
+                    ok: false,
+                    error: 'Unauthorized'
+                })
+            }
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             const {description} = request.body as {description: string}
             if(!userId){
@@ -75,6 +96,13 @@ class UpdateTaskController{
 class DeleteTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
+            const token = request.headers.authorization
+            if (!token) {
+                return reply.code(401).send({
+                    ok: false,
+                    error: 'Unauthorized'
+                })
+            }
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             if(!userId){
                 return reply.status(404).send({message: "Missing required field: User Id"})
