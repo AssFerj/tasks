@@ -6,8 +6,13 @@ class JwtService{
             expiresIn: '1h'
         })
     }
-    decodeToken() {
-        return true;
+    decodeToken(token: string): boolean {
+        try {
+            jwt.verify(token, process.env.JWT_SECRET!);
+            return true
+        } catch {
+            return false
+        }
     }
 }
 
