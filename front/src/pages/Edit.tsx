@@ -7,8 +7,7 @@ import { RootState } from '../store/store';
 // import { editTaskAction } from '../store/modules/tasksSlice';
 // import TaskType from '../types/TaskType';
 // import { themeLight } from '../config/Theme/Theme';
-import { Typography, alpha } from '@mui/material';
-import { themeLight } from '../config/Theme/Theme';
+import { Typography } from '@mui/material';
 
 const Edit: React.FC = () => {
   const params = useParams();
@@ -59,27 +58,11 @@ const Edit: React.FC = () => {
         type={"text"}
         fullWidth
         variant="outlined"
-        sx={{
-          borderRadius: 1,
-          color: themeLight.palette.secondary.contrastText,
-          borderColor: `${themeLight.palette.secondary.main}`,
-          background: `${themeLight.palette.primary.contrastText}`,
-          '&:Mui-focused': {
-            boxShadow: `${alpha(themeLight.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
-            borderColor: themeLight.palette.secondary.light,
-          }
-        }}
         value={newDescription}
         onChange={e => handleSetDescription(e)}
       />
-      <Button variant='contained' fullWidth sx={{
-        marginTop: 2,
-        background: `${themeLight.palette.secondary.dark}`,
-        "&:hover":{
-          background: `${themeLight.palette.primary.dark}`,
-          color: `${themeLight.palette.primary.contrastText}`
-        }
-      }} onClick={handleEditTask}>Editar</Button>
+      <Button variant='contained' fullWidth
+       onClick={handleEditTask}>Editar</Button>
 
     </React.Fragment>
   );

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import '../app.css'
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,8 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { loginAction } from '../store/modules/userSlice';
-import { themeDark } from '../config/Theme/Theme';
-import { alpha } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -23,7 +20,7 @@ function Copyright(props: any) {
       {'Copyright © '}
       <Link color="inherit" href="https://curriculum-web-j3bj.vercel.app/" sx={{
         "&:hover":{
-          color: `${themeDark.palette.primary.contrastText}`
+          // color: `${theme.palette.primary.contrastText}`
         }
       }}>
         Assis Junior
@@ -40,7 +37,6 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const logedUser = useSelector((state: any)=> state.logedUserReducer);
-  console.log(logedUser);
   
   useEffect(() => {
       if(logedUser.id){
@@ -56,15 +52,14 @@ export default function SignIn() {
       password
     }
     dispatch(loginAction(logUser));
-    // navigate('/home');
     return;
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{height: '50%'/*, background: themeDark.palette.background.default,*/, p: 5, mt: '18%'}}>
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -73,7 +68,7 @@ export default function SignIn() {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5" color={themeDark.palette.primary.contrastText}>
+        <Typography component="h1" variant="h5" /*color={themeDark.palette.primary.contrastText}*/>
           Tasks - Login
         </Typography>
         <Box component="form" onSubmit={submitLogin} noValidate sx={{ mt: 1 }}>
@@ -87,15 +82,15 @@ export default function SignIn() {
             autoComplete="email"
             type='email'
             autoFocus
-            sx={{
-              borderRadius: 1,
-              borderColor: `${themeDark.palette.secondary.main}`,
-              background: `${themeDark.palette.primary.contrastText}`,
-              '&:Mui-focused': {
-                boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
-                borderColor: themeDark.palette.secondary.light,
-              }
-            }}
+            // sx={{
+            //   borderRadius: 1
+            //   // borderColor: `${themeDark.palette.secondary.main}`,
+            //   // background: `${themeDark.palette.primary.contrastText}`,
+            //   // '&:Mui-focused': {
+            //   //   boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
+            //   //   borderColor: themeDark.palette.secondary.light,
+            //   }
+            // }}
             value={email}
             onChange={(e)=>setEmail(e.target.value)}
           />
@@ -108,15 +103,15 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-            sx={{
-              borderRadius: 1,
-              borderColor: `${themeDark.palette.secondary.main}`,
-              background: `${themeDark.palette.primary.contrastText}`,
-              '&:Mui-focused': {
-                boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
-                borderColor: themeDark.palette.secondary.light,
-              }
-            }}
+            // sx={{
+            //   borderRadius: 1,
+            //   borderColor: `${themeDark.palette.secondary.main}`,
+            //   background: `${themeDark.palette.primary.contrastText}`,
+            //   '&:Mui-focused': {
+            //     boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
+            //     borderColor: themeDark.palette.secondary.light,
+            //   }
+            // }}
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
           />
@@ -127,11 +122,11 @@ export default function SignIn() {
             sx={{ 
               mt: 3, 
               mb: 2,
-              background: `${themeDark.palette.secondary.dark}`,
-              "&:hover":{
-                background: `${themeDark.palette.primary.dark}`,
-                color: `${themeDark.palette.primary.contrastText}`
-              }
+              // background: `${themeDark.palette.secondary.dark}`,
+              // "&:hover":{
+              //   background: `${themeDark.palette.primary.dark}`,
+              //   color: `${themeDark.palette.primary.contrastText}`
+              // }
             }}
           >
             Entrar
@@ -141,9 +136,9 @@ export default function SignIn() {
               <Link href="/cadastro" variant="body2"
                 sx={{
                   textDecoration: 'none',
-                  color: `${themeDark.palette.secondary.light}`,
+                  // color: `${themeDark.palette.secondary.light}`,
                   "&:hover":{
-                    color: `${themeDark.palette.primary.contrastText}`
+                    // color: `${themeDark.palette.primary.contrastText}`
                   }
                 }}
               >
@@ -153,7 +148,7 @@ export default function SignIn() {
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4, color: `${themeDark.palette.secondary.light}` }} />
+      <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
 }

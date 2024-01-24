@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import '../app.css'
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -48,7 +47,7 @@ export default function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{height: '50%', background: '#cecece', p: 5, mt: '18%'}}>
       <Box
         sx={{
           marginTop: 8,
