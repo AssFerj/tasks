@@ -40,7 +40,7 @@ export async function login(props: LogedUserType): Promise<ApiResponse> {
 export async function createTask(props: TaskType): Promise<ApiResponse> {
     try {
         const result = await api.post(`/user/${props.userId}/task`, props); 
-        console.log(result.data);
+        // console.log(result.data);
              
         return result.data;
     } catch (error: any) {
@@ -62,7 +62,7 @@ export async function listTasks(userId: string): Promise<ApiResponse> {
 export async function editTasks(props: EditTaskProps): Promise<ApiResponse> {
     try {
         const result = await api.put(`/user/${props.userId}/task/${props.taskId}`);
-        console.log(result.data);
+        // console.log(result.data);
         
         return result.data;
     } catch (error: any) {
@@ -73,7 +73,7 @@ export async function editTasks(props: EditTaskProps): Promise<ApiResponse> {
 export async function deleteTasks(props: DeleteTaskProps): Promise<ApiResponse> {
     try {
         const result = await api.delete(`/user/${props.userId}/task/${props.taskId}`);
-        console.log(result.data);
+        // console.log(result.data);
         
         return result.data;
     } catch (error: any) {
