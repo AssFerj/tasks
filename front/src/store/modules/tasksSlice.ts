@@ -1,12 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createTask, deleteTasks, editTasks, listTasks } from '../../services/api.service';
 import Task from '../../types/TaskType';
-import TaskType from '../../types/TaskType';
 
 export interface ListTaskProps {
   id: string;
 }
-
 export interface EditTaskProps {
   userId: string;
   taskId: string;
@@ -16,7 +14,12 @@ export interface DeleteTaskProps {
   taskId: string;
 }
 
-export const createTaskAction = createAsyncThunk('task/create', async (props: TaskType) => {
+export interface CreateTaskProps {
+  userId: string;
+  description: string;
+}
+
+export const createTaskAction = createAsyncThunk('task/create', async (props: CreateTaskProps) => {
   const result = await createTask(props);
   return result;
 });
@@ -41,6 +44,13 @@ export const tasksSlice = createSlice({
   initialState: [] as Task[],
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(createTaskAction.pending, () => {
+      console.log('Create Task started');
+    })
+    builder.addCase(createTaskAction.fulfilled, (_, action) => {
+      console.log('Create Task ended');
+      return action.payload.data ?? [];
+    })
     builder.addCase(listTaskAction.pending, () => {
       console.log('List Task started');
     })
