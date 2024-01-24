@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateUserService, DeleteUserService, GetUserByEmailService, ListUsersService, LoginUserService } from "../services/user.services";
 import { JwtService } from "../services/auth.service/auth.service";
+import bcrypt from "bcrypt";
 
 class CreateUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -20,11 +21,12 @@ class CreateUserController{
             if(result){
                 return reply.status(400).send({message: "User already exist"})
             }
+            const hashPassword = bcrypt.hashSync(password, 10)
             const userService = new CreateUserService()
             const user = await userService.execute({
                 name: name,
                 email: email,
-                password: password
+                password: hashPassword
             })
             return reply.status(201).send({
                 ok: true,
@@ -61,30 +63,6 @@ class ListUsersController{
     }
 }
 
-class DeleteUserController{
-    async handle(request: FastifyRequest, reply: FastifyReply){
-        try {
-            const {userId} = request.params as {userId: string}
-            if(!userId){
-                return reply.status(404).send({message: "Missing required field: Id"})
-            }
-            const userService = new DeleteUserService()
-            const deletedUser = await userService.execute(userId)
-            return reply.status(201).send({
-                ok: true,
-                message: "User deleted successfully",
-                data: {
-                    id: deletedUser.id,
-                    name: deletedUser.name,
-                    email: deletedUser.email
-                }
-            })
-        } catch (error) {
-            return reply.status(500).send({message: "Internal server error"})
-        }
-    }
-}
-
 class LoginUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
@@ -96,14 +74,12 @@ class LoginUserController{
                 return reply.status(404).send({message: "Missing required field: Password"})
             }
             const userService = new LoginUserService()
-            const loggedUser = await userService.execute({
-                email: email,
-                password: password
-            })
+            const loggedUser = await userService.execute(email)
             if(!loggedUser){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
-            if(loggedUser.password !== password){
+            const decodePassword = bcrypt.compareSync(password, loggedUser.password)
+            if(!decodePassword){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
             const token = new JwtService().createToken({
@@ -127,4 +103,4 @@ class LoginUserController{
     }
 }
 
-export { CreateUserController, ListUsersController, DeleteUserController, LoginUserController }
+export { CreateUserController, ListUsersController, LoginUserController }
