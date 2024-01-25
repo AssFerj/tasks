@@ -1,94 +1,115 @@
 import '../app.css'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { /*useEffect,*/ useMemo, useState } from 'react';
-import { Button, Grid, /*IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,*/ TextField, Typography, /*styled, tableCellClasses*/ } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
-// import EditIcon from '@mui/icons-material/Edit';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, styled, tableCellClasses } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { createTask, deleteTask, getTasks } from '../services/api.service';
+import TaskType from '../types/TaskType';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//   },
-// }));
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   '&:nth-of-type(odd)': {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   '&:last-child td, &:last-child th': {
-//     border: 0,
-//   },
-// }));
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 const Home: React.FC = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [description, setDescription] = useState('');
-  // const [token, setToken] = useState<string | null>('');
-  
-  // useEffect(() => {  
-  //   const authToken = localStorage.getItem('authToken');
-  //   setToken(authToken);
-  //   console.log(token);
-    
-  //   if(!token){
-  //     navigate('/');
-  //     return;
-  //   }
-  // }, [navigate, token]);
+  const [tasks, setTasks] = useState([] as TaskType[]);
+  const user = JSON.parse(localStorage.getItem('user')!);
+  const token = localStorage.getItem('authToken');
 
+  const fetchTasks = async () => {
+    try {
+      const data = await getTasks(user);
+      setTasks(data);
+    } catch (error) {
+      console.log(error, 'Fetch Tasks Error');
+    }
+  };
+  
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    } else {
+      fetchTasks();
+    }
+  },[token, navigate])
+  
+  const handleDelete = async (task: TaskType) => {
+    try {
+      const response = await deleteTask(task);
+      setTasks(response);
+      fetchTasks();
+      return;
+    } catch (error) {
+      console.log(error, 'Handle Delete Task');
+    }
+  }
 
   const listTasks = useMemo(() => {
     
-    // if(state.length > 0){
-    //   return (
-    //     <TableContainer component={Paper} sx={{marginTop: 3}}>
-    //       <Table sx={{ minWidth: 700 }} aria-label="customized table">
-    //           <TableHead>
-    //           <TableRow>
-    //               <StyledTableCell>Descrição da tarefa</StyledTableCell>
-    //               <StyledTableCell align="right">Ações</StyledTableCell>
-    //           </TableRow>
-    //           </TableHead>
-    //           <TableBody>
-    //               {state.map(task => (
-    //               <StyledTableRow key={task.id}>
-    //               <StyledTableCell component="th" scope="row">
-    //                   {task.description}
-    //               </StyledTableCell>
-    //               <StyledTableCell align="right">
-    //                   <IconButton /*onClick={()=>handleEdit(task.id)}*/>
-    //                   <EditIcon/>
-    //                   </IconButton>
-    //                   <IconButton /*onClick={()=>handleDelete(task.id)}*/>
-    //                   <DeleteIcon/>
-    //                   </IconButton>
-    //               </StyledTableCell>
-    //               </StyledTableRow>
-    //               ))}
-    //           </TableBody>
-    //       </Table>
-    //     </TableContainer>
-    //   )
-    // }
+    if(tasks.length > 0){
+      return (
+        <TableContainer component={Paper} sx={{marginTop: 3}}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+              <TableRow>
+                  <StyledTableCell>Descrição da tarefa</StyledTableCell>
+                  <StyledTableCell align="right">Ações</StyledTableCell>
+              </TableRow>
+              </TableHead>
+              <TableBody>
+                  {tasks.map(task => (
+                  <StyledTableRow key={task.id}>
+                  <StyledTableCell component="th" scope="row">
+                      {task.description}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                      <IconButton /*onClick={()=>handleEdit(task.id)}*/>
+                      <EditIcon/>
+                      </IconButton>
+                      <IconButton onClick={()=>handleDelete(task)}>
+                      <DeleteIcon/>
+                      </IconButton>
+                  </StyledTableCell>
+                  </StyledTableRow>
+                  ))}
+              </TableBody>
+          </Table>
+        </TableContainer>
+      )
+    }
       return (<Typography mt={3}>Nenhuma tarefa cadastrado</Typography>)
-  },[/*state*/]);
+  },[tasks]);
 
-  const handleCreateTask = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateTask = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // if(logedUser){
-    //   const taskToCreate = {
-    //     userId: logedUser.id!,
-    //     description
-    //   }   
-    //   dispatch(createTaskAction(taskToCreate));
-    // }
-    // navigate('/');
-    return;
+    try {
+        const newTask = {
+          userId: user.id!,
+          description
+        }
+        await createTask(newTask);
+      return;
+    } catch (error) {
+      console.log(error, 'Submit Create Task');
+    }
   };
 
   return (
@@ -98,7 +119,7 @@ const Home: React.FC = () => {
           <Typography variant='h3' textAlign={'center'}>Tasks</Typography>
         </Grid>
         <Grid item>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} component={'form'} onSubmit={handleCreateTask}>
             <Grid item>
               <TextField type='text' fullWidth 
                 label='Descrição do recado' 
@@ -107,11 +128,10 @@ const Home: React.FC = () => {
               />
             </Grid>
             <Grid item>
-              <Button type='button' variant='contained' fullWidth 
+              <Button type='submit' variant='contained' fullWidth 
                 sx={{
                   height: '100%'
                 }}
-                onClick={()=>handleCreateTask}
               >
                 Cadastrar
               </Button>
