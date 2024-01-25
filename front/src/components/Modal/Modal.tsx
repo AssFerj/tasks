@@ -12,28 +12,28 @@ import {
   
   interface ModalProps {
     title: string;
-    openDeleteConfirm: boolean;
+    openModal: boolean;
     cancelText?: string;
     confirmText?: string;
     itemDescription?: any;
-    actionCloseDeleteConfirm: () => void;
+    actionCloseModal: () => void;
     actionDeleteTask: (item: any) => void;
   }
   
   const Modal: React.FC<ModalProps> = ({
     title,
-    openDeleteConfirm,
+    openModal,
     cancelText,
     confirmText,
     itemDescription,
-    actionCloseDeleteConfirm,
+    actionCloseModal,
     actionDeleteTask
   }) => {
     return (
       <React.Fragment>
         <Dialog
-          open={openDeleteConfirm}
-          onClose={actionCloseDeleteConfirm}
+          open={openModal}
+          onClose={actionCloseModal}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -44,7 +44,7 @@ import {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={actionCloseDeleteConfirm}>{cancelText}</Button>
+            <Button onClick={actionCloseModal}>{cancelText}</Button>
             <Button onClick={actionDeleteTask} autoFocus>
               {confirmText}
             </Button>
