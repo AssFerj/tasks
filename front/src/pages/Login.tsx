@@ -9,10 +9,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-// import { useNavigate } from 'react-router-dom';
-import { /*useEffect,*/ useState } from 'react';
-// import { signIn } from '../services/api.service';
-// import UserType from '../types/UserType';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { signIn } from '../services/api.service';
+import UserType from '../types/UserType';
 
 function Copyright(props: any) {
   return (
@@ -32,43 +32,24 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [loggedUser, setLoggedUser] = useState<UserType>({});
-  // const [token, setToken] = useState<string | null>('');
-  
-  // useEffect(() => {
-  //   const logUser = async () => {
-  //     setLoggedUser(await signIn({email, password}));
-  //     console.log(loggedUser);
-  //     if(loggedUser){
-  //       const authToken = loggedUser.token
-  //       setToken(authToken!)
-  //       localStorage.setItem('token', authToken!)
-  //       if(token){
-  //         navigate('/home');
-  //       } return
-  //     }
-  //   }
-  //   logUser()
-  // }, [email, loggedUser, navigate, password, token]);
+  const [loggedUser, setLoggedUser] = useState<UserType>({});
 
   const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const logUser = {
-    //   email,
-    //   password
-    // }
-    // dispatch(loginAction(logUser));
-    // return;
     try {
-      if(email && password){
-        // console.log(isLogged);
-        
-        // if(loggedUser){
-        //   navigate('/home');
-        // }
+      const newLogUser = await signIn({email, password})
+      setLoggedUser(newLogUser);
+      
+      if(loggedUser){
+        const authToken = loggedUser.token
+        localStorage.setItem('authToken', authToken!)
+        localStorage.setItem('user', JSON.stringify(loggedUser)!)
+        if(loggedUser && loggedUser.token){
+          navigate('/home');
+        } return
       }
     } catch (error) {
       console.log(error, 'Submit Login');
@@ -102,15 +83,6 @@ export default function SignIn() {
             autoComplete="email"
             type='email'
             autoFocus
-            // sx={{
-            //   borderRadius: 1
-            //   // borderColor: `${themeDark.palette.secondary.main}`,
-            //   // background: `${themeDark.palette.primary.contrastText}`,
-            //   // '&:Mui-focused': {
-            //   //   boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
-            //   //   borderColor: themeDark.palette.secondary.light,
-            //   }
-            // }}
             value={email}
             onChange={(e)=>setEmail(e.target.value)}
           />
@@ -123,15 +95,6 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-            // sx={{
-            //   borderRadius: 1,
-            //   borderColor: `${themeDark.palette.secondary.main}`,
-            //   background: `${themeDark.palette.primary.contrastText}`,
-            //   '&:Mui-focused': {
-            //     boxShadow: `${alpha(themeDark.palette.secondary.light, 0.25)} 0 0 0 0.2rem`,
-            //     borderColor: themeDark.palette.secondary.light,
-            //   }
-            // }}
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
           />
@@ -142,26 +105,13 @@ export default function SignIn() {
             sx={{ 
               mt: 3, 
               mb: 2,
-              // background: `${themeDark.palette.secondary.dark}`,
-              // "&:hover":{
-              //   background: `${themeDark.palette.primary.dark}`,
-              //   color: `${themeDark.palette.primary.contrastText}`
-              // }
             }}
           >
             Entrar
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="/cadastro" variant="body2"
-                sx={{
-                  textDecoration: 'none',
-                  // color: `${themeDark.palette.secondary.light}`,
-                  "&:hover":{
-                    // color: `${themeDark.palette.primary.contrastText}`
-                  }
-                }}
-              >
+              <Link href="/cadastro" variant="body2">
                 {"Não tem uma conta? Cadastre-se"}
               </Link>
             </Grid>
