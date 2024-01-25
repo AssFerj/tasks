@@ -2,32 +2,23 @@ import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useNavigate, useParams } from 'react-router-dom';
-import { /*useDispatch,*/ useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-// import { editTaskAction } from '../store/modules/tasksSlice';
-// import TaskType from '../types/TaskType';
-// import { themeLight } from '../config/Theme/Theme';
 import { Typography } from '@mui/material';
+// import UserType from '../types/UserType';
 
 const Edit: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const [newDescription, setNewDescription] = useState('');
-  const state = useSelector((state: RootState) => state.tasksReducer);
-  const logedUser = useSelector((state: RootState)=> state.logedUserReducer); 
-  const taskToEdit = state.find(task =>task.id === params.id);
-  
-  // console.log(logedUser);
-  
+  const token = localStorage.getItem('authToken');
+  // const user = JSON.parse(localStorage.getItem('user')!) as UserType;
+
   useEffect(() => {
-    const isUserLoged = !!logedUser.id;
+    if (!token) {
+      navigate('/login');
+    } 
+    console.log(params);
     
-    if(!isUserLoged){
-      navigate('/');
-      return;
-    }
-  }, [logedUser, navigate]);
+  },[token, navigate])
   
   const handleSetDescription = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewDescription(e.currentTarget.value);
@@ -49,7 +40,7 @@ const Edit: React.FC = () => {
   return (
     <React.Fragment>
       <h1>Editar recado</h1>
-      <Typography variant='body1'>{taskToEdit?.description}</Typography>
+      <Typography variant='body1'>{params.description}</Typography>
       <TextField
         autoFocus
         margin="dense"
