@@ -8,10 +8,6 @@ export interface ICreateUserProps{
 
 class CreateUserService{
     async execute(user: ICreateUserProps){
-        if(!user.name || !user.email || !user.password){
-            throw new Error("Missing parameters");
-        }
-
         const userAlreadyExists = await prismaClient.user.findFirst({
             where:{
                 email: user.email
