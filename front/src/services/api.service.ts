@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import UserType from '../types/UserType';
+import TaskType from '../types/TaskType';
 
 const api = axios.create({
     baseURL: 'http://localhost:3333',
@@ -10,8 +11,6 @@ const api = axios.create({
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
         'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Max-Age': '86400',
-        'Access-Control-Expose-Headers': 'Content-Length, X-JSON',
     }
 });
 
@@ -29,12 +28,31 @@ export const validateUser = async (email: string) => {
 }
 export const signIn = async (props: UserType) => {
     const response = await api.post(`/login`, props);
-    // console.log(response.data.data);
     return response.data.data;
 }
 export const signOut = async () => {
     const response = await api.post(`/logout`);
     return response.data;
+}
+
+export const createUser = async (props: UserType) => {
+    const response = await api.post(`/user`, props);
+    return response.data.data;
+}
+
+export const createTask = async (props: TaskType) => {
+    const response = await api.post(`/user/${props.userId}/task`, props);
+    return response.data.data;
+}
+
+export const getTasks = async (props: UserType) => {
+    const response = await api.get(`/user/${props.id}/task`);
+    return response.data.data;
+}
+
+export const deleteTask = async (props: TaskType) => {
+    const response = await api.delete(`/user/${props.userId}/task/${props.id}`);
+    return response.data.data;
 }
 
 
