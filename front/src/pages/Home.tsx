@@ -53,7 +53,7 @@ const Home: React.FC = () => {
   },[token, navigate])
 
   const handleEdit = (task: TaskType) => {
-    navigate(`/edit/${task.id}`);
+    navigate(`/editar/${task.id}`);
   }
   
   const handleDelete = async (task: TaskType) => {
