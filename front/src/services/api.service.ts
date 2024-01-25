@@ -41,7 +41,7 @@ export const createUser = async (props: UserType) => {
 }
 
 export const createTask = async (props: TaskType) => {
-    const response = await api.post(`/user/${props.userId}/task`, props);
+    const response = await api.post(`/user/${props.user_id}/task`, props);
     return response.data.data;
 }
 
@@ -50,8 +50,13 @@ export const getTasks = async (props: UserType) => {
     return response.data.data;
 }
 
+export const updateTask = async (props: TaskType) => {
+    const response = await api.put(`/user/${props.user_id}/task/${props.id}`, props);
+    return response.data.data;
+}
+
 export const deleteTask = async (props: TaskType) => {
-    const response = await api.delete(`/user/${props.userId}/task/${props.id}`);
+    const response = await api.delete(`/user/${props.user_id}/task/${props.id}`);
     return response.data.data;
 }
 
