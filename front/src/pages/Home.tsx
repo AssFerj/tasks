@@ -1,5 +1,5 @@
-import '../app.css'
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import '../app.css'
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, styled, tableCellClasses } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -112,6 +112,7 @@ const Home: React.FC = () => {
           description
         }
         await createTask(newTask);
+        setDescription('');
       return;
     } catch (error) {
       console.log(error, 'Submit Create Task');
