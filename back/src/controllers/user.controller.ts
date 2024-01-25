@@ -18,6 +18,8 @@ class CreateUserController{
             }
             const userAlreadyExist = new GetUserByEmailService()
             const result = await userAlreadyExist.execute(email)
+            console.log(result);
+            
             if(result){
                 return reply.status(400).send({message: "User already exist"})
             }
