@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { createUser } from '../services/api.service';
 
 function Copyright(props: any) {
   return (
@@ -31,20 +32,19 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const submitregister = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitregister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const userToCreate = {
-    //   name,
-    //   email,
-    //   password
-    // }   
-    // dispatch(createUserAction(userToCreate));
-    navigate('/');
-    return;
+    try {
+      await createUser({name, email, password})
+      navigate('/');
+      return;
+    } catch (error) {
+      console.log(error, 'Submit Register');
+    }
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{height: '50%', background: '#cecece', p: 5, mt: '18%'}}>
+    <Container component="main" maxWidth="xs" sx={{height: '50%', p: 5, mt: '18%'}}>
       <Box
         sx={{
           marginTop: 8,
@@ -53,7 +53,7 @@ export default function SignUp() {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
