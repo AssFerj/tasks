@@ -10,7 +10,7 @@ import {
   } from '@mui/material';
   import React from 'react';
   
-  interface DeleteDialogProps {
+  interface ModalProps {
     title: string;
     openDeleteConfirm: boolean;
     cancelText?: string;
@@ -20,7 +20,7 @@ import {
     actionDeleteTask: (item: any) => void;
   }
   
-  const DeleteDialog: React.FC<DeleteDialogProps> = ({
+  const Modal: React.FC<ModalProps> = ({
     title,
     openDeleteConfirm,
     cancelText,
@@ -54,4 +54,4 @@ import {
     );
   };
   
-  export default DeleteDialog;
+  export default Modal;
