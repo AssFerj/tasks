@@ -21,14 +21,12 @@ class CreateUserService{
         if(userAlreadyExists){
             throw new Error("User already exists");
         }
-        
-        /// Fazer o hash da senha
     
         const newUser = await prismaClient.user.create({
             data:{
                 name: user.name,
                 email: user.email,
-                password: user.password //passar hash da senha
+                password: user.password
             },
             select:{
                 id: true,

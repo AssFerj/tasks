@@ -9,10 +9,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { loginAction } from '../store/modules/userSlice';
+// import { useNavigate } from 'react-router-dom';
+import { /*useEffect,*/ useState } from 'react';
+// import { signIn } from '../services/api.service';
+// import UserType from '../types/UserType';
 
 function Copyright(props: any) {
   return (
@@ -32,31 +32,51 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
-  const dispatch = useDispatch<any>();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const logedUser = useSelector((state: any)=> state.logedUserReducer);
+  // const [loggedUser, setLoggedUser] = useState<UserType>({});
+  // const [token, setToken] = useState<string | null>('');
   
-  useEffect(() => {
-      if(logedUser.id){
-      navigate('/home');
-      return;
-    }
-  }, [logedUser, navigate]);
+  // useEffect(() => {
+  //   const logUser = async () => {
+  //     setLoggedUser(await signIn({email, password}));
+  //     console.log(loggedUser);
+  //     if(loggedUser){
+  //       const authToken = loggedUser.token
+  //       setToken(authToken!)
+  //       localStorage.setItem('token', authToken!)
+  //       if(token){
+  //         navigate('/home');
+  //       } return
+  //     }
+  //   }
+  //   logUser()
+  // }, [email, loggedUser, navigate, password, token]);
 
-  const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const logUser = {
-      email,
-      password
+    // const logUser = {
+    //   email,
+    //   password
+    // }
+    // dispatch(loginAction(logUser));
+    // return;
+    try {
+      if(email && password){
+        // console.log(isLogged);
+        
+        // if(loggedUser){
+        //   navigate('/home');
+        // }
+      }
+    } catch (error) {
+      console.log(error, 'Submit Login');
     }
-    dispatch(loginAction(logUser));
-    return;
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{height: '50%'/*, background: themeDark.palette.background.default,*/, p: 5, mt: '18%'}}>
+    <Container component="main" maxWidth="xs" sx={{height: '50%'/*, background: themeDark.palette.background.default,*/, p: 5, mt: '10%'}}>
       <Box
         sx={{
           marginTop: 3,
@@ -65,10 +85,10 @@ export default function SignIn() {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5" /*color={themeDark.palette.primary.contrastText}*/>
+        <Typography variant="h5" /*color={themeDark.palette.primary.contrastText}*/>
           Tasks - Login
         </Typography>
         <Box component="form" onSubmit={submitLogin} noValidate sx={{ mt: 1 }}>

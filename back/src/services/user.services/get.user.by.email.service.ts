@@ -5,13 +5,14 @@ class GetUserByEmailService{
         const user = await prismaClient.user.findFirst({
             where:{
                 email: email
-            },
-            select:{
-                email: true
             }
         })
 
-        return user;
+        return {
+            id: user?.id,
+            name: user?.name,
+            email: user?.email
+        };
     }
 }
 

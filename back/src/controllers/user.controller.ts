@@ -63,6 +63,29 @@ class ListUsersController{
     }
 }
 
+class GetUserController{
+    async handle(request: FastifyRequest, reply: FastifyReply){
+        try {
+            const {email} = request.params as {email: string}
+            if(!email){
+                return reply.status(404).send({message: "Missing required field: E-mail"})
+            }
+            const userService = new GetUserByEmailService()
+            const user = await userService.execute(email)
+            if(!user){
+                return reply.status(404).send({message: "User not found"})
+            }
+            return reply.status(201).send({
+                ok: true,
+                message: "User listted successfully",
+                data: user
+            })
+        } catch (error) {
+            return reply.status(500).send({message: "Internal server error"})
+        }
+    }
+}
+
 class LoginUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
@@ -103,4 +126,4 @@ class LoginUserController{
     }
 }
 
-export { CreateUserController, ListUsersController, LoginUserController }
+export { CreateUserController, GetUserController, ListUsersController, LoginUserController }

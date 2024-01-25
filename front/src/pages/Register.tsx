@@ -10,9 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { createUserAction } from '../store/modules/usersSlice';
 
 function Copyright(props: any) {
   return (
@@ -28,7 +26,6 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
-  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -36,12 +33,12 @@ export default function SignUp() {
 
   const submitregister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const userToCreate = {
-      name,
-      email,
-      password
-    }   
-    dispatch(createUserAction(userToCreate));
+    // const userToCreate = {
+    //   name,
+    //   email,
+    //   password
+    // }   
+    // dispatch(createUserAction(userToCreate));
     navigate('/');
     return;
   };
