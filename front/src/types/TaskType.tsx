@@ -1,5 +1,5 @@
 type TaskType = {
-    userId: string;
+    user_id: string;
     id?: number;
     description: string;
   };
