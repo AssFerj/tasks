@@ -7,6 +7,7 @@ import { createTask, deleteTask, getTasks } from '../services/api.service';
 import TaskType from '../types/TaskType';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UserType from '../types/UserType';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,7 +32,7 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const [description, setDescription] = useState('');
   const [tasks, setTasks] = useState([] as TaskType[]);
-  const user = JSON.parse(localStorage.getItem('user')!);
+  const user = JSON.parse(localStorage.getItem('user')!) as UserType;
   const token = localStorage.getItem('authToken');
 
   const fetchTasks = async () => {
@@ -50,9 +51,13 @@ const Home: React.FC = () => {
       fetchTasks();
     }
   },[token, navigate])
+
+  const handleEdit = (task: TaskType) => {
+    navigate(`/edit/${task.id}`);
+  }
   
   const handleDelete = async (task: TaskType) => {
-    try {
+    try {     
       const response = await deleteTask(task);
       setTasks(response);
       fetchTasks();
@@ -81,7 +86,7 @@ const Home: React.FC = () => {
                       {task.description}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                      <IconButton /*onClick={()=>handleEdit(task.id)}*/>
+                      <IconButton onClick={()=>handleEdit(task)}>
                       <EditIcon/>
                       </IconButton>
                       <IconButton onClick={()=>handleDelete(task)}>
@@ -92,17 +97,18 @@ const Home: React.FC = () => {
                   ))}
               </TableBody>
           </Table>
+
         </TableContainer>
       )
     }
-      return (<Typography mt={3}>Nenhuma tarefa cadastrado</Typography>)
+      return (<Typography mt={3}>Nenhuma tarefa cadastrada</Typography>)
   },[tasks]);
 
   const handleCreateTask = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
         const newTask = {
-          userId: user.id!,
+          user_id: user.id!,
           description
         }
         await createTask(newTask);
