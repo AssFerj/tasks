@@ -11,6 +11,10 @@ class CreateTaskController{
                     error: 'Unauthorized'
                 })
             }
+            const csrfToken = await request.headers['x-csrf-token']
+            if(!csrfToken){
+                return reply.status(401).send({message: "Unauthorized"})
+            }
             const {userId} = request.params as {userId: string}
             const {description} = request.body as {description: string, status: string, user_id: string}
             if(!userId){
@@ -18,6 +22,9 @@ class CreateTaskController{
             }
             if(!description){
                 return reply.status(404).send({message: "Missing required field: Description"})
+            }
+            if(!csrfToken){
+                return reply.status(404).send({message: "Missing required field: CSRF Token"})
             }
             const taskService = new CreateTaskService()
             const task = await taskService.execute({userId, description})
@@ -41,6 +48,10 @@ class ListTasksController{
                     ok: false,
                     error: 'Unauthorized'
                 })
+            }
+            const csrfToken = await request.headers['x-csrf-token']
+            if(!csrfToken){
+                return reply.status(401).send({message: "Unauthorized"})
             }
             const {userId} = request.params as {userId: string}
             if(!userId){
@@ -68,6 +79,10 @@ class UpdateTaskController{
                     ok: false,
                     error: 'Unauthorized'
                 })
+            }
+            const csrfToken = await request.headers['x-csrf-token']
+            if(!csrfToken){
+                return reply.status(401).send({message: "Unauthorized"})
             }
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             const {description} = request.body as {description: string}
@@ -102,6 +117,10 @@ class DeleteTaskController{
                     ok: false,
                     error: 'Unauthorized'
                 })
+            }
+            const csrfToken = await request.headers['x-csrf-token']
+            if(!csrfToken){
+                return reply.status(401).send({message: "Unauthorized"})
             }
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             if(!userId){

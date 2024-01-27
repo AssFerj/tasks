@@ -3,14 +3,14 @@ import axios from 'axios';
 import UserType from '../types/UserType';
 import TaskType from '../types/TaskType';
 
+const csrfToken = localStorage.getItem('csrfToken') || '';
+// console.log(csrfToken);
+
 const api = axios.create({
     baseURL: 'http://localhost:3333',
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-        'Access-Control-Allow-Credentials': 'true',
+        'X-CSRF-Token': csrfToken
     }
 });
 

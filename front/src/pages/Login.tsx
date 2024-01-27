@@ -40,13 +40,16 @@ export default function SignIn() {
   const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      localStorage.setItem('csrfToken', JSON.stringify(loggedUser.csrfToken)!)
+      localStorage.setItem('user', JSON.stringify(loggedUser)!)
       const newLogUser = await signIn({email, password})
       setLoggedUser(newLogUser);
       
       if(loggedUser){
         const authToken = loggedUser.token
+        // console.log(loggedUser.csrfToken);
+        
         localStorage.setItem('authToken', authToken!)
-        localStorage.setItem('user', JSON.stringify(loggedUser)!)
         if(loggedUser && loggedUser.token){
           navigate('/home');
         } return

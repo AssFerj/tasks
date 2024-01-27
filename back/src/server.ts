@@ -1,5 +1,7 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import fastifyCookie from '@fastify/cookie'
+import fastifyCsrfProtection from '@fastify/csrf-protection'
 import { userRoutes } from './routes/user.routes'
 import { taskRoutes } from './routes/task.routes'
 
@@ -12,6 +14,10 @@ app.setErrorHandler((error, request, reply) => {
 })
 
 const start = async () => {
+    await app.register(fastifyCookie)
+    await app.register(fastifyCsrfProtection, {
+        cookieKey: 'X-CSRF-Token'
+    })
     await app.register(cors)
     await app.register(userRoutes)
     await app.register(taskRoutes)

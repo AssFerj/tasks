@@ -1,7 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateUserService, DeleteUserService, GetUserByEmailService, ListUsersService, LoginUserService } from "../services/user.services";
+import { CreateUserService, GetUserByEmailService, ListUsersService, LoginUserService } from "../services/user.services";
 import { JwtService } from "../services/auth.service/auth.service";
 import bcrypt from "bcrypt";
+import { fastifyCookie } from "@fastify/cookie";
 
 class CreateUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -91,6 +92,10 @@ class GetUserController{
 class LoginUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
+            const csrfToken = await reply.generateCsrf()
+            if(!csrfToken){
+                return reply.status(401).send({message: "Unauthorized"})
+            }
             const {email, password} = request.body as {email: string, password: string}
             if(!email){
                 return reply.status(404).send({message: "Missing required field: E-mail"})
@@ -119,6 +124,7 @@ class LoginUserController{
                     id: loggedUser.id,
                     name: loggedUser.name,
                     email: loggedUser.email,
+                    csrfToken: csrfToken,
                     token
                 }
             })

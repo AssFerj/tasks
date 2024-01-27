@@ -6,6 +6,7 @@ type UserType = {
   email?: string;
   password?: string;
   token?: string;
+  csrfToken?: string;
   tasks?: TaskType[];
 };
 

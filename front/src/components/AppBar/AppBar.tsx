@@ -5,17 +5,20 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import TaskIcon from '@mui/icons-material/Task';
-import { useAppSelector } from '../../store/hooks';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import UserType from '../../types/UserType';
 
-export default function MenuAppBar() {
+interface MenuProps {
+  user: UserType
+}
+
+export default function MenuAppBar({user}: MenuProps) {
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const logedUser = useAppSelector(state => state.userReducer);
   const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,12 +26,13 @@ export default function MenuAppBar() {
   };
 
   const handleClose = () => {
+    localStorage.clear();
     navigate('/');
   };
 
   return (
-    <Box sx={{ flexGrow: 1, position: 'absolute', top: '1.5rem', zIndex: 1, width: '90%' }}>
-      <AppBar position="static" sx={{ borderRadius: '.5rem' }}>
+    <Box sx={{ flexGrow: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, width: '100%' }}>
+      <AppBar position="static">
         <Toolbar>
           <IconButton size="large" edge="start" color="inherit" aria-label="menu">
             <TaskIcon />
@@ -42,7 +46,7 @@ export default function MenuAppBar() {
                 Olá!
               </Typography>
               <Typography variant="body1" fontWeight={600} mr={1}>
-                {logedUser.name}
+                {user.name}
               </Typography>
               <IconButton
                 size="large"

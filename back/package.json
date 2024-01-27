@@ -12,7 +12,9 @@
   "author": "Assis Junior",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
     "@fastify/cors": "^8.5.0",
+    "@fastify/csrf-protection": "^6.4.1",
     "@prisma/client": "^5.8.1",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.5",

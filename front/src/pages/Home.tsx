@@ -8,6 +8,7 @@ import TaskType from '../types/TaskType';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserType from '../types/UserType';
+import MenuAppBar from '../components/AppBar/AppBar';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,12 +46,12 @@ const Home: React.FC = () => {
   };
   
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
+    if (!token && !user) {
+      navigate('/');
     } else {
       fetchTasks();
     }
-  },[token, navigate])
+  },[token, user, navigate])
 
   const handleEdit = (task: TaskType) => {
     navigate(`/editar/${task.id}`);
@@ -122,6 +123,9 @@ const Home: React.FC = () => {
   return (
     <React.Fragment>
       <Grid container spacing={2} p={10} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+        <Grid item>
+          <MenuAppBar user={user}/>
+        </Grid>
         <Grid item mb={3}>
           <Typography variant='h3' textAlign={'center'}>Tasks</Typography>
         </Grid>
