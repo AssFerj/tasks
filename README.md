@@ -49,6 +49,7 @@ Make sure you have the following installed:
    
    ```bash
    yarn dev
+
 The application should be running at http://localhost:5173.
 
 #### Bak-End
