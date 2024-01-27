@@ -15,7 +15,7 @@ Make sure you have the following installed:
 
 - Node.js
 - MongoDB
-- npm or yarn (recommended)
+- npm or yarn
 
 ### Installation
 
@@ -23,3 +23,73 @@ Make sure you have the following installed:
 
    ```bash
    git clone https://github.com/your-username/task-management-app.git
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd tasks
+
+#### Front-End
+
+1. Navigate to the frontend directory:
+   
+   ```bash
+   cd front
+3. Install dependencies:
+   
+   ```bash
+   npm install
+
+5. Run the development server:
+   
+   ```bash
+   npm run dev
+   
+   or
+   
+   ```bash
+   yarn dev
+The application should be running at http://localhost:5173.
+
+#### Bak-End
+
+1. Open a new terminal window and navigate to the backend directory:
+
+   ```bash
+   cd back
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+
+3. Run the backend server:
+
+   ```bash
+   npm run dev
+The backend server should be running at http://localhost:3333.
+
+## Usage
+
+1. Open your web browser and go to http://localhost:5173 to access the frontend.
+2. Use the application to create, list, edit, and delete tasks.
+
+### Technologies Used
+
+- React.js
+- React Router DOM
+- TypeScript
+- Node.js
+- Fastify
+- Prisma ORM
+- MongoDB
+- JSON Web Token
+- Bcrypt
+
+#### Licence
+This project is licensed under the MIT License - see the [LICENCE](https://opensource.org/license/MIT/) file for details.
+
+Contatos do autor: 
+
+Email: [Assis Junior WM](mailto:assisjuniorwm@gmail.com)
+GitHub: [AssFerj](https://github.com/AssFerj)
