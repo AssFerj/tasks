@@ -45,7 +45,7 @@ Make sure you have the following installed:
    ```bash
    npm run dev
    
-   or
+or
    
    ```bash
    yarn dev
