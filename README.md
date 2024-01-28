@@ -5,6 +5,18 @@ This is a web application for task management that allows users to create, list,
 ## Author
 Assis Junior
 
+### Login Page
+[Login Page](https://github.com/AssFerj/tasks/blob/main/front/public/login.png)
+
+### Register Page
+[Register Page](https://github.com/AssFerj/tasks/blob/main/front/public/cadastro.png)
+
+### Home Page
+[Home Page](https://github.com/AssFerj/tasks/blob/main/front/public/home.png)
+
+### Edit Task
+[Edit Task](https://github.com/AssFerj/tasks/blob/main/front/public/editar-tarefa.png)
+
 ## Getting Started
 
 To run the project locally, follow the steps below.
