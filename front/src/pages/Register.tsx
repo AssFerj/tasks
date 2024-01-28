@@ -57,7 +57,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Tasks - Cadastro
+          Task-In - Cadastro
         </Typography>
         <Box component="form" onSubmit={submitregister} noValidate sx={{ mt: 2 }}>
           <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
