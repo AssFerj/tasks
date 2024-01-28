@@ -21,53 +21,64 @@ Make sure you have the following installed:
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/your-username/task-management-app.git
+    ```bash
+    [git clone https://github.com/your-username/task-management-app.git](https://github.com/AssFerj/tasks.git)
+    ```
 
 2. Navigate to the project directory:
 
-   ```bash
-   cd tasks
+    ```bash
+    cd tasks
+    ```
 
 #### Front-End
 
 1. Navigate to the frontend directory:
-   
-   ```bash
-   cd front
+
+    ```bash
+    cd front
+    ```
+
 3. Install dependencies:
-   
-   ```bash
-   npm install
+
+    ```bash
+    npm install
+    ```
 
 5. Run the development server:
-   
-   ```bash
-   npm run dev
-   
-or
-   
-   ```bash
-   yarn dev
-   
+
+    ```bash
+    npm run dev
+    ```
+
+    or
+
+    ```bash
+    yarn dev
+    ```
+
 The application should be running at http://localhost:5173.
 
-#### Bak-End
+#### Back-End
 
 1. Open a new terminal window and navigate to the backend directory:
 
-   ```bash
-   cd back
+    ```bash
+    cd back
+    ```
 
 2. Install dependencies:
 
-   ```bash
-   npm install
+    ```bash
+    npm install
+    ```
 
 3. Run the backend server:
 
-   ```bash
-   npm run dev
+    ```bash
+    npm run dev
+    ```
+
 The backend server should be running at http://localhost:3333.
 
 ## Usage
@@ -87,10 +98,11 @@ The backend server should be running at http://localhost:3333.
 - JSON Web Token
 - Bcrypt
 
-#### Licence
-This project is licensed under the MIT License - see the [LICENCE](https://opensource.org/license/MIT/) file for details.
+## Licence
 
-Contatos do autor: 
+This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
 
-Email: [Assis Junior WM](mailto:assisjuniorwm@gmail.com)
-GitHub: [AssFerj](https://github.com/AssFerj)
+### Contacts
+
+- Email: [Assis Junior WM](mailto:assisjuniorwm@gmail.com)
+- GitHub: [AssFerj](https://github.com/AssFerj)
