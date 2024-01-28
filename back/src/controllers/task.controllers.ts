@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateTaskService, DeleteTaskService, ListTasksService, UpdateTaskService } from "../services/task.services";
+import { CreateTaskRepository, DeleteTaskRepository, ListTasksRepository, UpdateTaskRepository } from "../repository/task.repository";
 
 class CreateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -11,10 +11,10 @@ class CreateTaskController{
                     error: 'Unauthorized'
                 })
             }
-            const csrfToken = await request.headers['x-csrf-token']
-            if(!csrfToken){
-                return reply.status(401).send({message: "Unauthorized"})
-            }
+            // const csrfToken = await request.headers['x-csrf-token']
+            // if(!csrfToken){
+            //     return reply.status(401).send({message: "Unauthorized"})
+            // }
             const {userId} = request.params as {userId: string}
             const {description} = request.body as {description: string, status: string, user_id: string}
             if(!userId){
@@ -23,11 +23,11 @@ class CreateTaskController{
             if(!description){
                 return reply.status(404).send({message: "Missing required field: Description"})
             }
-            if(!csrfToken){
-                return reply.status(404).send({message: "Missing required field: CSRF Token"})
-            }
-            const taskService = new CreateTaskService()
-            const task = await taskService.execute({userId, description})
+            // if(!csrfToken){
+            //     return reply.status(404).send({message: "Missing required field: CSRF Token"})
+            // }
+            const taskRepository = new CreateTaskRepository()
+            const task = await taskRepository.execute({userId, description})
             return reply.status(201).send({
                 ok: true,
                 message: "Task created successfully",
@@ -49,16 +49,16 @@ class ListTasksController{
                     error: 'Unauthorized'
                 })
             }
-            const csrfToken = await request.headers['x-csrf-token']
-            if(!csrfToken){
-                return reply.status(401).send({message: "Unauthorized"})
-            }
+            // const csrfToken = await request.headers['x-csrf-token']
+            // if(!csrfToken){
+            //     return reply.status(401).send({message: "Unauthorized"})
+            // }
             const {userId} = request.params as {userId: string}
             if(!userId){
                 return reply.status(404).send({message: "User not found"})
             }
-            const taskService = new ListTasksService()
-            const tasks = await taskService.execute(userId)
+            const taskRepository = new ListTasksRepository()
+            const tasks = await taskRepository.execute(userId)
             return reply.status(201).send({
                 ok: true,
                 message: "Tasks listted successfully",
@@ -80,10 +80,10 @@ class UpdateTaskController{
                     error: 'Unauthorized'
                 })
             }
-            const csrfToken = await request.headers['x-csrf-token']
-            if(!csrfToken){
-                return reply.status(401).send({message: "Unauthorized"})
-            }
+            // const csrfToken = await request.headers['x-csrf-token']
+            // if(!csrfToken){
+            //     return reply.status(401).send({message: "Unauthorized"})
+            // }
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             const {description} = request.body as {description: string}
             if(!userId){
@@ -95,8 +95,8 @@ class UpdateTaskController{
             if(!description){
                 return reply.status(404).send({message: "Missing required field: Description"})
             }
-            const taskService = new UpdateTaskService()
-            const updatedTask = await taskService.execute({userId, taskId, description})
+            const taskRepository = new UpdateTaskRepository()
+            const updatedTask = await taskRepository.execute({userId, taskId, description})
             return reply.status(201).send({
                 ok: true,
                 message: "Task updated successfully",
@@ -118,10 +118,10 @@ class DeleteTaskController{
                     error: 'Unauthorized'
                 })
             }
-            const csrfToken = await request.headers['x-csrf-token']
-            if(!csrfToken){
-                return reply.status(401).send({message: "Unauthorized"})
-            }
+            // const csrfToken = await request.headers['x-csrf-token']
+            // if(!csrfToken){
+            //     return reply.status(401).send({message: "Unauthorized"})
+            // }
             const {userId, taskId} = request.params as {userId: string, taskId: string}
             if(!userId){
                 return reply.status(404).send({message: "Missing required field: User Id"})
@@ -129,8 +129,8 @@ class DeleteTaskController{
             if(!taskId){
                 return reply.status(404).send({message: "Missing required field: Task Id"})
             }
-            const taskService = new DeleteTaskService()
-            const deletedTask = await taskService.execute(userId, taskId)
+            const taskRepository = new DeleteTaskRepository()
+            const deletedTask = await taskRepository.execute(userId, taskId)
             return reply.status(201).send({
                 ok: true,
                 message: "Task deleted successfully",

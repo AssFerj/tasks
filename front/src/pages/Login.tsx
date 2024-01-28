@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn } from '../services/api.service';
 import UserType from '../types/UserType';
 
@@ -32,35 +32,31 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loggedUser, setLoggedUser] = useState<UserType>({});
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loggedUser, setLoggedUser] = useState<UserType>({})
+
+  useEffect(()=>{
+    if (loggedUser && loggedUser.token) {
+      localStorage.setItem('user', JSON.stringify(loggedUser));
+      sessionStorage.setItem('authToken', loggedUser.token);
+      navigate('/home');
+    }
+  }, [loggedUser, navigate])
 
   const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      localStorage.setItem('csrfToken', JSON.stringify(loggedUser.csrfToken)!)
-      localStorage.setItem('user', JSON.stringify(loggedUser)!)
-      const newLogUser = await signIn({email, password})
+      const newLogUser = await signIn({ email, password });
       setLoggedUser(newLogUser);
-      
-      if(loggedUser){
-        const authToken = loggedUser.token
-        // console.log(loggedUser.csrfToken);
-        
-        localStorage.setItem('authToken', authToken!)
-        if(loggedUser && loggedUser.token){
-          navigate('/home');
-        } return
-      }
     } catch (error) {
-      console.log(error, 'Submit Login');
+      console.log(error, 'Submit Login')
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{height: '50%'/*, background: themeDark.palette.background.default,*/, p: 5, mt: '10%'}}>
+    <Container component="main" maxWidth="xs" sx={{height: '50%', p: 5, mt: '10%'}}>
       <Box
         sx={{
           marginTop: 3,

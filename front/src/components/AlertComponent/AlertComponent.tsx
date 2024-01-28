@@ -4,13 +4,19 @@ import { AlertColor } from '@mui/material/Alert';
 import React from 'react';
 
 interface AlertComponentProps {
-  message: string;
-  typeAlert: AlertColor;
-  actionShowAlert: boolean;
+  // message: string;
+  // typeAlert: AlertColor;
+  // actionShowAlert: boolean;
+  alertState: {
+    actionShowAlert: boolean;
+    message: string;
+    typeAlert: AlertColor | string;
+  };
   actionShowAlertFc: () => void;
 }
 
-const AlertComponent: React.FC<AlertComponentProps> = ({ message, typeAlert, actionShowAlert, actionShowAlertFc }) => {
+const AlertComponent: React.FC<AlertComponentProps> = ({ alertState, actionShowAlertFc }) => {
+  const { actionShowAlert, message, typeAlert } = alertState;
   return (
     <React.Fragment>
       <Collapse
@@ -25,7 +31,7 @@ const AlertComponent: React.FC<AlertComponentProps> = ({ message, typeAlert, act
         }}
       >
         <Alert
-          severity={typeAlert}
+          severity={typeAlert as AlertColor}
           action={
             <IconButton aria-label="close" color="inherit" size="small" onClick={actionShowAlertFc}>
               <CloseIcon fontSize="inherit" />

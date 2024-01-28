@@ -1,6 +1,6 @@
 import prismaClient from "../../prisma";
 
-class GetUserByEmailService{
+class GetUserByEmailRepository{
     async execute(email: string){
         const user = await prismaClient.user.findFirst({
             where:{
@@ -25,4 +25,4 @@ class GetUserByEmailService{
     }
 }
 
-export { GetUserByEmailService }
+export { GetUserByEmailRepository }

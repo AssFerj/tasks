@@ -44,7 +44,7 @@ export default function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{height: '50%', p: 5, mt: '18%'}}>
+    <Container component="main" maxWidth="xs" sx={{height: '50%', p: 5, mt: '8%'}}>
       <Box
         sx={{
           marginTop: 8,

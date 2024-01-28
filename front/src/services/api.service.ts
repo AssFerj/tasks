@@ -3,61 +3,60 @@ import axios from 'axios';
 import UserType from '../types/UserType';
 import TaskType from '../types/TaskType';
 
-const csrfToken = localStorage.getItem('csrfToken') || '';
-// console.log(csrfToken);
-
+const token = localStorage.getItem('authToken')
 const api = axios.create({
     baseURL: 'http://localhost:3333',
     headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
+        Authorization: `Bearer ${token}`
     }
 });
 
-api.interceptors.request.use(async (config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-})
+// api.interceptors.request.use(async (config) => {
+//     const token = localStorage.getItem('authToken')
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`
+//     }
+//     return config;
+// })
 
 export const validateUser = async (email: string) => {
-    const response = await api.get(`/user/${email}`);
+    const response = await api.get(`/user/${email}`)
     return response.data.data;
 }
 export const signIn = async (props: UserType) => {
-    const response = await api.post(`/login`, props);
+    const response = await api.post(`/login`, props)
     return response.data.data;
 }
 export const signOut = async () => {
-    const response = await api.post(`/logout`);
-    return response.data;
+    localStorage.removeItem('user')
+    sessionStorage.removeItem('authToken')
+    return
 }
 
 export const createUser = async (props: UserType) => {
-    const response = await api.post(`/user`, props);
-    return response.data.data;
+    const response = await api.post(`/user`, props)
+    return response.data.data
 }
 
 export const createTask = async (props: TaskType) => {
-    const response = await api.post(`/user/${props.user_id}/task`, props);
-    return response.data.data;
+    const response = await api.post(`/user/${props.user_id}/task`, props)
+    return response.data.data
 }
 
 export const getTasks = async (props: UserType) => {
-    const response = await api.get(`/user/${props.id}/task`);
-    return response.data.data;
+    const response = await api.get(`/user/${props.id}/task`)
+    return response.data.data
 }
 
 export const updateTask = async (props: TaskType) => {
-    const response = await api.put(`/user/${props.user_id}/task/${props.id}`, props);
-    return response.data.data;
+    const response = await api.put(`/user/${props.user_id}/task/${props.id}`, props)
+    return response.data.data
 }
 
 export const deleteTask = async (props: TaskType) => {
-    const response = await api.delete(`/user/${props.user_id}/task/${props.id}`);
-    return response.data.data;
+    const response = await api.delete(`/user/${props.user_id}/task/${props.id}`)
+    return response.data.data
 }
 
 

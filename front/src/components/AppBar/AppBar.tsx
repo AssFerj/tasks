@@ -11,23 +11,24 @@ import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import UserType from '../../types/UserType';
+import { signOut } from '../../services/api.service';
 
 interface MenuProps {
   user: UserType
 }
 
 export default function MenuAppBar({user}: MenuProps) {
-  const [auth, setAuth] = useState(true);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const navigate = useNavigate();
+  const [auth, setAuth] = useState(true)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const navigate = useNavigate()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget)
   };
 
   const handleClose = () => {
-    localStorage.clear();
-    navigate('/');
+    signOut()
+    navigate('/')
   };
 
   return (

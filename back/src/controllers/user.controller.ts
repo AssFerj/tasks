@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateUserService, GetUserByEmailService, ListUsersService, LoginUserService } from "../services/user.services";
-import { JwtService } from "../services/auth.service/auth.service";
+import { CreateUserRepository, GetUserByEmailRepository, ListUsersRepository, LoginUserRepository } from "../repository/user.repository";
+import { AuthRepository } from "../repository/auth.repository/auth.repository"
 import bcrypt from "bcrypt";
 import { fastifyCookie } from "@fastify/cookie";
 
@@ -17,7 +17,7 @@ class CreateUserController{
             if(!password){
                 return reply.status(404).send({message: "Missing required field: Password"})
             }
-            const userAlreadyExist = new GetUserByEmailService()
+            const userAlreadyExist = new GetUserByEmailRepository()
             const result = await userAlreadyExist.execute(email)
             console.log(result);
             
@@ -25,8 +25,8 @@ class CreateUserController{
                 return reply.status(400).send({message: "User already exist"})
             }
             const hashPassword = bcrypt.hashSync(password, 10)
-            const userService = new CreateUserService()
-            const user = await userService.execute({
+            const userRepository = new CreateUserRepository()
+            const user = await userRepository.execute({
                 name: name,
                 email: email,
                 password: hashPassword
@@ -45,8 +45,8 @@ class CreateUserController{
 class ListUsersController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
-            const userService = new ListUsersService()
-            const users = await userService.execute()
+            const userRepository = new ListUsersRepository()
+            const users = await userRepository.execute()
             return reply.status(201).send({
                 ok: true,
                 message: "Users listted successfully",
@@ -73,8 +73,8 @@ class GetUserController{
             if(!email){
                 return reply.status(404).send({message: "Missing required field: E-mail"})
             }
-            const userService = new GetUserByEmailService()
-            const user = await userService.execute(email)
+            const userRepository = new GetUserByEmailRepository()
+            const user = await userRepository.execute(email)
             if(!user){
                 return reply.status(404).send({message: "User not found"})
             }
@@ -92,10 +92,10 @@ class GetUserController{
 class LoginUserController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
-            const csrfToken = await reply.generateCsrf()
-            if(!csrfToken){
-                return reply.status(401).send({message: "Unauthorized"})
-            }
+            // const csrfToken = await reply.generateCsrf()
+            // if(!csrfToken){
+            //     return reply.status(401).send({message: "Unauthorized"})
+            // }
             const {email, password} = request.body as {email: string, password: string}
             if(!email){
                 return reply.status(404).send({message: "Missing required field: E-mail"})
@@ -103,8 +103,8 @@ class LoginUserController{
             if(!password){
                 return reply.status(404).send({message: "Missing required field: Password"})
             }
-            const userService = new LoginUserService()
-            const loggedUser = await userService.execute(email)
+            const userRepository = new LoginUserRepository()
+            const loggedUser = await userRepository.execute(email)
             if(!loggedUser){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
@@ -112,7 +112,7 @@ class LoginUserController{
             if(!decodePassword){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
-            const token = new JwtService().createToken({
+            const token = new AuthRepository().createToken({
                 id: loggedUser.id,
                 name: loggedUser.name,
                 email: loggedUser.email
@@ -124,7 +124,7 @@ class LoginUserController{
                     id: loggedUser.id,
                     name: loggedUser.name,
                     email: loggedUser.email,
-                    csrfToken: csrfToken,
+                    // csrfToken: csrfToken,
                     token
                 }
             })
