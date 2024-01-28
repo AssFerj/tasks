@@ -1,6 +1,6 @@
 import prismaClient from "../../prisma";
 
-class ListTasksRepository{
+class ListTasksUseCase{
     async execute(userId: string){
         const findUser = await prismaClient.user.findFirst({
             where:{
@@ -22,4 +22,4 @@ class ListTasksRepository{
     }
 }
 
-export { ListTasksRepository }
+export { ListTasksUseCase }

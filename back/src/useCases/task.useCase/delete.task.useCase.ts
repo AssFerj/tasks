@@ -1,6 +1,6 @@
 import prismaClient from "../../prisma";
 
-class DeleteTaskRepository{
+class DeleteTaskUseCase{
     async execute(userId: string, taskId: string){
         if(!userId){
             throw new Error("User not found");
@@ -30,4 +30,4 @@ class DeleteTaskRepository{
     }
 }
 
-export { DeleteTaskRepository }
+export { DeleteTaskUseCase }

@@ -6,7 +6,7 @@ export interface IUpdateTaskProps {
     description: string
 }
 
-class UpdateTaskRepository{
+class UpdateTaskUseCase{
     async execute(data: IUpdateTaskProps){
         const task = await prismaClient.task.update({
             where:{
@@ -22,4 +22,4 @@ class UpdateTaskRepository{
     }
 }
 
-export {UpdateTaskRepository}
+export {UpdateTaskUseCase}

@@ -1,6 +1,6 @@
 import prismaClient from "../../prisma";
 
-class DeleteUserRepository{
+class DeleteUserUseCase{
     async execute(user_id: string){
         if(!user_id){
             throw new Error("User id is required");
@@ -23,4 +23,4 @@ class DeleteUserRepository{
     }
 }
 
-export { DeleteUserRepository }
+export { DeleteUserUseCase }

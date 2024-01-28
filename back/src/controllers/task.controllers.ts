@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateTaskRepository, DeleteTaskRepository, ListTasksRepository, UpdateTaskRepository } from "../repository/task.repository";
+import { CreateTaskUseCase, DeleteTaskUseCase, ListTasksUseCase, UpdateTaskUseCase } from "../useCases/task.useCase";
 
 class CreateTaskController{
     async handle(request: FastifyRequest, reply: FastifyReply){
@@ -26,8 +26,8 @@ class CreateTaskController{
             // if(!csrfToken){
             //     return reply.status(404).send({message: "Missing required field: CSRF Token"})
             // }
-            const taskRepository = new CreateTaskRepository()
-            const task = await taskRepository.execute({userId, description})
+            const taskUseCase = new CreateTaskUseCase()
+            const task = await taskUseCase.execute({userId, description})
             return reply.status(201).send({
                 ok: true,
                 message: "Task created successfully",
@@ -57,8 +57,8 @@ class ListTasksController{
             if(!userId){
                 return reply.status(404).send({message: "User not found"})
             }
-            const taskRepository = new ListTasksRepository()
-            const tasks = await taskRepository.execute(userId)
+            const taskUseCase = new ListTasksUseCase()
+            const tasks = await taskUseCase.execute(userId)
             return reply.status(201).send({
                 ok: true,
                 message: "Tasks listted successfully",
@@ -95,8 +95,8 @@ class UpdateTaskController{
             if(!description){
                 return reply.status(404).send({message: "Missing required field: Description"})
             }
-            const taskRepository = new UpdateTaskRepository()
-            const updatedTask = await taskRepository.execute({userId, taskId, description})
+            const taskUseCase = new UpdateTaskUseCase()
+            const updatedTask = await taskUseCase.execute({userId, taskId, description})
             return reply.status(201).send({
                 ok: true,
                 message: "Task updated successfully",
@@ -129,8 +129,8 @@ class DeleteTaskController{
             if(!taskId){
                 return reply.status(404).send({message: "Missing required field: Task Id"})
             }
-            const taskRepository = new DeleteTaskRepository()
-            const deletedTask = await taskRepository.execute(userId, taskId)
+            const taskUseCase = new DeleteTaskUseCase()
+            const deletedTask = await taskUseCase.execute(userId, taskId)
             return reply.status(201).send({
                 ok: true,
                 message: "Task deleted successfully",

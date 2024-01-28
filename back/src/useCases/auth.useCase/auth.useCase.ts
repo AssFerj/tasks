@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-class AuthRepository{
+class AuthUseCase{
     createToken(data: any): string {
         return jwt.sign(data, process.env.JWT_SECRET!, {
             expiresIn: '1h'
@@ -16,4 +16,4 @@ class AuthRepository{
     }
 }
 
-export {AuthRepository}
+export {AuthUseCase}

@@ -6,8 +6,7 @@ export interface ICreateUserProps{
     password: string
 }
 
-class CreateUserRepository
-{
+class CreateUserUseCase{
     async execute(user: ICreateUserProps){
         const userAlreadyExists = await prismaClient.user.findFirst({
             where:{
@@ -36,5 +35,4 @@ class CreateUserRepository
     }
 }
 
-export { CreateUserRepository
- }
+export { CreateUserUseCase }

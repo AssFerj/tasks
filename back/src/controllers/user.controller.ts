@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateUserRepository, GetUserByEmailRepository, ListUsersRepository, LoginUserRepository } from "../repository/user.repository";
-import { AuthRepository } from "../repository/auth.repository/auth.repository"
+import { CreateUserUseCase, GetUserByEmailUseCase, ListUsersUseCase, LoginUserUseCase } from "../useCases/user.useCase";
+import { AuthUseCase } from "../useCases/auth.useCase/auth.useCase"
 import bcrypt from "bcrypt";
 import { fastifyCookie } from "@fastify/cookie";
 
@@ -17,7 +17,7 @@ class CreateUserController{
             if(!password){
                 return reply.status(404).send({message: "Missing required field: Password"})
             }
-            const userAlreadyExist = new GetUserByEmailRepository()
+            const userAlreadyExist = new GetUserByEmailUseCase()
             const result = await userAlreadyExist.execute(email)
             console.log(result);
             
@@ -25,8 +25,8 @@ class CreateUserController{
                 return reply.status(400).send({message: "User already exist"})
             }
             const hashPassword = bcrypt.hashSync(password, 10)
-            const userRepository = new CreateUserRepository()
-            const user = await userRepository.execute({
+            const userUseCase = new CreateUserUseCase()
+            const user = await userUseCase.execute({
                 name: name,
                 email: email,
                 password: hashPassword
@@ -45,8 +45,8 @@ class CreateUserController{
 class ListUsersController{
     async handle(request: FastifyRequest, reply: FastifyReply){
         try {
-            const userRepository = new ListUsersRepository()
-            const users = await userRepository.execute()
+            const userUseCase = new ListUsersUseCase()
+            const users = await userUseCase.execute()
             return reply.status(201).send({
                 ok: true,
                 message: "Users listted successfully",
@@ -73,8 +73,8 @@ class GetUserController{
             if(!email){
                 return reply.status(404).send({message: "Missing required field: E-mail"})
             }
-            const userRepository = new GetUserByEmailRepository()
-            const user = await userRepository.execute(email)
+            const userUseCase = new GetUserByEmailUseCase()
+            const user = await userUseCase.execute(email)
             if(!user){
                 return reply.status(404).send({message: "User not found"})
             }
@@ -103,8 +103,8 @@ class LoginUserController{
             if(!password){
                 return reply.status(404).send({message: "Missing required field: Password"})
             }
-            const userRepository = new LoginUserRepository()
-            const loggedUser = await userRepository.execute(email)
+            const userUseCase = new LoginUserUseCase()
+            const loggedUser = await userUseCase.execute(email)
             if(!loggedUser){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
@@ -112,7 +112,7 @@ class LoginUserController{
             if(!decodePassword){
                 return reply.status(401).send({message: "Invalid credentials"})
             }
-            const token = new AuthRepository().createToken({
+            const token = new AuthUseCase().createToken({
                 id: loggedUser.id,
                 name: loggedUser.name,
                 email: loggedUser.email

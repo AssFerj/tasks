@@ -1,6 +1,6 @@
 import prismaClient from "../../prisma";
 
-class LoginUserRepository{
+class LoginUserUseCase{
     async execute(email: string){
         const user = await prismaClient.user.findFirst({
             where:{
@@ -11,4 +11,4 @@ class LoginUserRepository{
     }
 }
 
-export {LoginUserRepository}
+export {LoginUserUseCase}

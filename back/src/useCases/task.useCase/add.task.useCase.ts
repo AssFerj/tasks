@@ -5,7 +5,7 @@ export interface ICreateTaskProps{
     description: string
 }
 
-class CreateTaskRepository{
+class CreateTaskUseCase{
     async execute(task: ICreateTaskProps){
         if(!task.description){
             throw new Error("Missing parameters");
@@ -37,4 +37,4 @@ class CreateTaskRepository{
     }
 }
 
-export { CreateTaskRepository }
+export { CreateTaskUseCase }
