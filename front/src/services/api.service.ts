@@ -5,7 +5,7 @@ import TaskType from '../types/TaskType';
 
 const token = localStorage.getItem('authToken')
 const api = axios.create({
-    baseURL: 'http://localhost:3333',
+    baseURL: import.meta.env.VITE_API_URL as string,
     headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`

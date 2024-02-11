@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "5.10.11",
     "@reduxjs/toolkit": "^1.9.3",
+    "@types/axios": "^0.14.0",
     "@types/deep-equal": "^1.0.4",
     "@types/node": "^20.11.6",
     "axios": "^1.6.5",
