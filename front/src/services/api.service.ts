@@ -12,14 +12,6 @@ const api = axios.create({
     }
 });
 
-// api.interceptors.request.use(async (config) => {
-//     const token = localStorage.getItem('authToken')
-//     if (token) {
-//         config.headers.Authorization = `Bearer ${token}`
-//     }
-//     return config;
-// })
-
 export const validateUser = async (email: string) => {
     const response = await api.get(`/user/${email}`)
     return response.data.data;
