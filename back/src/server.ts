@@ -22,7 +22,8 @@ const start = async () => {
     await app.register(userRoutes)
     await app.register(taskRoutes)
     try {
-        await app.listen({port: 3333})
+        const port = Number(process.env.API_PORT)
+        app.listen({port: port})
     } catch (error) {
         app.log.error(error)
         process.exit(1)

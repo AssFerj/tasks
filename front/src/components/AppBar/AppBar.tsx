@@ -41,7 +41,7 @@ export default function MenuAppBar({user}: MenuProps) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Task-In
           </Typography>
-          {auth && (
+          {auth ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="body1" mr={1}>
                 Olá!
@@ -78,6 +78,8 @@ export default function MenuAppBar({user}: MenuProps) {
                 <MenuItem onClick={handleClose}>Sair</MenuItem>
               </Menu>
             </Box>
+          ):(
+            <>{setAuth(false)}</>
           )}
         </Toolbar>
       </AppBar>
