@@ -1,12 +1,8 @@
 import { Collapse, Alert, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { AlertColor } from '@mui/material/Alert';
-import React from 'react';
 
 interface AlertComponentProps {
-  // message: string;
-  // typeAlert: AlertColor;
-  // actionShowAlert: boolean;
   alertState: {
     actionShowAlert: boolean;
     message: string;
@@ -18,7 +14,7 @@ interface AlertComponentProps {
 const AlertComponent: React.FC<AlertComponentProps> = ({ alertState, actionShowAlertFc }) => {
   const { actionShowAlert, message, typeAlert } = alertState;
   return (
-    <React.Fragment>
+    <>
       <Collapse
         in={actionShowAlert}
         style={{
@@ -42,7 +38,7 @@ const AlertComponent: React.FC<AlertComponentProps> = ({ alertState, actionShowA
           {message}
         </Alert>
       </Collapse>
-    </React.Fragment>
+    </>
   );
 };
 
