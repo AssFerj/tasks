@@ -5,7 +5,7 @@ const Copyright = () => {
     <>
       <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
         {'Copyright © '}
-        <Link color="inherit" href="https://assisjuniorwm.com.br">
+        <Link color="inherit" href="https://assisjuniorwm.com.br" target='_blank'>
           Assis Junior
         </Link>{' '}
         {new Date().getFullYear()}
